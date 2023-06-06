@@ -15,22 +15,25 @@ typedef struct {
 } binary_numbers;
 
 binary_numbers num_list[] = {
-    { .filename = "unsigned_test.txt",  .bitsize = 4,   .is_signed = false  },
-    { .filename = "signed_test.txt",    .bitsize = 4,   .is_signed = true   },
-    // { .filename = OUT_DIR"unsigned_2bit.txt",     .bitsize = 2,   .is_signed = false  },
-    // { .filename = OUT_DIR"unsigned_4bit.txt",     .bitsize = 4,   .is_signed = false  },
-    // { .filename = OUT_DIR"unsigned_8bit.txt",     .bitsize = 8,   .is_signed = false  },
-    // { .filename = OUT_DIR"unsigned_16bit.txt",    .bitsize = 16,  .is_signed = false  },
-    // { .filename = OUT_DIR"signed_2bit.txt",       .bitsize = 2,   .is_signed = true   },
-    // { .filename = OUT_DIR"signed_4bit.txt",       .bitsize = 4,   .is_signed = true   },
-    // { .filename = OUT_DIR"signed_8bit.txt",       .bitsize = 8,   .is_signed = true   },
-    // { .filename = OUT_DIR"signed_16bit.txt",      .bitsize = 16,  .is_signed = true   },
+    // { .filename = "unsigned_test.txt",  .bitsize = 4,   .is_signed = false  },
+    // { .filename = "signed_test.txt",    .bitsize = 4,   .is_signed = true   },
+    // { .filename = "unsigned_test2.txt",  .bitsize = 8,   .is_signed = false  },
+    // { .filename = "signed_test2.txt",    .bitsize = 8,   .is_signed = true   },
+    { .filename = OUT_DIR"unsigned_2bit.txt",     .bitsize = 2,   .is_signed = false  },
+    { .filename = OUT_DIR"unsigned_4bit.txt",     .bitsize = 4,   .is_signed = false  },
+    { .filename = OUT_DIR"unsigned_8bit.txt",     .bitsize = 8,   .is_signed = false  },
+    { .filename = OUT_DIR"unsigned_16bit.txt",    .bitsize = 16,  .is_signed = false  },
+    { .filename = OUT_DIR"signed_2bit.txt",       .bitsize = 2,   .is_signed = true   },
+    { .filename = OUT_DIR"signed_4bit.txt",       .bitsize = 4,   .is_signed = true   },
+    { .filename = OUT_DIR"signed_8bit.txt",       .bitsize = 8,   .is_signed = true   },
+    { .filename = OUT_DIR"signed_16bit.txt",      .bitsize = 16,  .is_signed = true   },
     /* Generating the full range of 32-bit numbers likely won't work due to Notepad's line limitations */
     /* ...it only goes up to 65536 lines. */
 };
 
 const int NUMS_TO_WRITE = ArrayLength(num_list);
 
+void GenerateLine(FILE *file_ptr, int left_num, int right_num, int num_bits);
 char *MakeBinaryNumber(int dec_num, int most_sig_bit);
 
 /* Represent signed integers using Two's Complement and write them to a file. */
@@ -43,30 +46,46 @@ int main(void)
 
         int num_bits = num_list[i].bitsize;
         int lower, upper;
+        /* These variables help us divide the file into 2 columns based on the most significant bit. */
+        int left_num, right_num, limit;
         if (num_list[i].is_signed)
         {
-            /* Lowest value for unsigned integers is -2^(num_bits - 1) */
+            /* Lowest value for signed integers is -2^(num_bits - 1) */
             lower = (int) pow(-2, num_bits - 1);
-            /* Highest value for unsigned integers is (2^(num_bits - 1)) - 1 */
+            /* Highest value for signed integers is (2^(num_bits - 1)) - 1 */
             upper = (int) pow(2, num_bits - 1) - 1;
+            left_num = 0;
+            right_num = lower;
+            limit = upper;
         }
         else
         {
-            /* The lowest value for Unsigned Integers is 0 */
+            /* The lowest value for unsigned integers is always 0. */
             lower = 0;
-            /* Effective range is 2^(num_bits) - 1 */
+            /* Effective range for unsigned integers is 2^(num_bits) - 1. */
             upper = (int) pow(2, num_bits) - 1;
+            limit = upper / 2;
+            left_num = lower;
+            right_num = left_num + limit + 1;     
         }
-        /* Inclusive of upper. */
-        for (int dec = lower; dec <= upper; dec++)
-        {
-            char *bin_str = MakeBinaryNumber(dec, num_bits);            
-            fprintf(current_file, "%s\t=\t%i\n", bin_str, dec);
-            free(bin_str);
-        }
+        for (left_num, right_num; left_num <= limit; left_num++, right_num++)
+            GenerateLine(current_file, left_num, right_num, num_bits);
         fclose(current_file);
     }
     return 0;
+}
+
+void GenerateLine(FILE *file_ptr, int left_num, int right_num, int num_bits)
+{
+    char *left_str = MakeBinaryNumber(left_num, num_bits);
+    char *right_str = MakeBinaryNumber(right_num, num_bits); 
+
+    fprintf(file_ptr, 
+        "%s\t=\t%i\t\t\t%s\t=\t%i\n", 
+        left_str, left_num, right_str, right_num);
+
+    free(left_str);
+    free(right_str);
 }
 
 /* Given a specified number of bits (e.g. 4-bit, 8-bit, 16-bit) */
