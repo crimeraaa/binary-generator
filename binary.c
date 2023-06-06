@@ -15,15 +15,9 @@ typedef struct {
 } binary_numbers;
 
 binary_numbers num_list[] = {
-    // { .filename = "unsigned_test.txt",  .bitsize = 4,   .is_signed = false  },
-    // { .filename = "signed_test.txt",    .bitsize = 4,   .is_signed = true   },
-    // { .filename = "unsigned_test2.txt",  .bitsize = 8,   .is_signed = false  },
-    // { .filename = "signed_test2.txt",    .bitsize = 8,   .is_signed = true   },
-    { .filename = OUT_DIR"unsigned_2bit.txt",     .bitsize = 2,   .is_signed = false  },
     { .filename = OUT_DIR"unsigned_4bit.txt",     .bitsize = 4,   .is_signed = false  },
     { .filename = OUT_DIR"unsigned_8bit.txt",     .bitsize = 8,   .is_signed = false  },
     { .filename = OUT_DIR"unsigned_16bit.txt",    .bitsize = 16,  .is_signed = false  },
-    { .filename = OUT_DIR"signed_2bit.txt",       .bitsize = 2,   .is_signed = true   },
     { .filename = OUT_DIR"signed_4bit.txt",       .bitsize = 4,   .is_signed = true   },
     { .filename = OUT_DIR"signed_8bit.txt",       .bitsize = 8,   .is_signed = true   },
     { .filename = OUT_DIR"signed_16bit.txt",      .bitsize = 16,  .is_signed = true   },
@@ -68,8 +62,11 @@ int main(void)
             left_num = lower;
             right_num = left_num + limit + 1;     
         }
+        /* Generate our 2-column file based on whatever left_num and right_num were set to. */
+        /* limit represents the total lines taken in the file. */
         for (left_num, right_num; left_num <= limit; left_num++, right_num++)
             GenerateLine(current_file, left_num, right_num, num_bits);
+            
         fclose(current_file);
     }
     return 0;
