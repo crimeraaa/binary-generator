@@ -15,14 +15,16 @@ typedef struct {
 } binary_numbers;
 
 binary_numbers num_list[] = {
-    { .filename = OUT_DIR"unsigned_2bit.txt",     .bitsize = 2,   .is_signed = false  },
-    { .filename = OUT_DIR"unsigned_4bit.txt",     .bitsize = 4,   .is_signed = false  },
-    { .filename = OUT_DIR"unsigned_8bit.txt",     .bitsize = 8,   .is_signed = false  },
-    { .filename = OUT_DIR"unsigned_16bit.txt",    .bitsize = 16,  .is_signed = false  },
-    { .filename = OUT_DIR"signed_2bit.txt",       .bitsize = 2,   .is_signed = true   },
-    { .filename = OUT_DIR"signed_4bit.txt",       .bitsize = 4,   .is_signed = true   },
-    { .filename = OUT_DIR"signed_8bit.txt",       .bitsize = 8,   .is_signed = true   },
-    { .filename = OUT_DIR"signed_16bit.txt",      .bitsize = 16,  .is_signed = true   },
+    { .filename = "unsigned_test.txt",  .bitsize = 4,   .is_signed = false  },
+    { .filename = "signed_test.txt",    .bitsize = 4,   .is_signed = true   },
+    // { .filename = OUT_DIR"unsigned_2bit.txt",     .bitsize = 2,   .is_signed = false  },
+    // { .filename = OUT_DIR"unsigned_4bit.txt",     .bitsize = 4,   .is_signed = false  },
+    // { .filename = OUT_DIR"unsigned_8bit.txt",     .bitsize = 8,   .is_signed = false  },
+    // { .filename = OUT_DIR"unsigned_16bit.txt",    .bitsize = 16,  .is_signed = false  },
+    // { .filename = OUT_DIR"signed_2bit.txt",       .bitsize = 2,   .is_signed = true   },
+    // { .filename = OUT_DIR"signed_4bit.txt",       .bitsize = 4,   .is_signed = true   },
+    // { .filename = OUT_DIR"signed_8bit.txt",       .bitsize = 8,   .is_signed = true   },
+    // { .filename = OUT_DIR"signed_16bit.txt",      .bitsize = 16,  .is_signed = true   },
     /* Generating the full range of 32-bit numbers likely won't work due to Notepad's line limitations */
     /* ...it only goes up to 65536 lines. */
 };
