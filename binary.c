@@ -66,7 +66,7 @@ int main(void)
         /* limit represents the total lines taken in the file. */
         for (left_num, right_num; left_num <= limit; left_num++, right_num++)
             GenerateLine(current_file, left_num, right_num, num_bits);
-            
+
         fclose(current_file);
     }
     return 0;
@@ -100,7 +100,7 @@ char *MakeBinaryNumber(int dec_num, int sig_bits)
     /* Subtract sig_bits by 1 to get the 0-based index. */
     for (sig_bits -= 1, idx = 0; sig_bits >= 0; sig_bits--, idx++) 
     {
-        /* Bit shift pads (to the left for >>, to the right for >> ) with zeroes. */
+        /* Bit shift pads (to the left for >>, to the right for << ) with zeroes. */
         /* This effectively gets the current digit at the sig-bits(th) place. */
         cur_bit = dec_num >> sig_bits;
         /* Ternary operators/shorthand if-else is so cryptic*/
